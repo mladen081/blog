@@ -7,7 +7,7 @@ RUN mvn clean package -DskipTests
 
 FROM openjdk:21-jdk-slim
 
-COPY --from=build /target/blog-0.0.1-SNAPSHOT blog.jar
+COPY --from=build /target/blog-0.0.1-SNAPSHOT.jar blog.jar
 
 EXPOSE 8080
 
