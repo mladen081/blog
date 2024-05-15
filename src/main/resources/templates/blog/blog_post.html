@@ -15,7 +15,86 @@
             <h2 th:text="${post.shortDescription}"></h2>
             <hr />
             <div th:utext="${post.content}"></div>
+
+            <hr />
+            <div>
+                <h3>Comments:</h3>
+
+                <div th:each="comment: ${post.comments}">
+                    <div>
+                        <p><b>Name:</b><strong th:text="${comment.name}"></strong></p>
+                        <p><b>Date:</b><strong th:text="${#temporals.format(comment.createdOn, 'dd MMMM yyyy')}"></strong></p>
+                        <p th:text="${comment.content}"></p>
+                        <br />
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Leave a comment</h2>
+                    </div>
+                <div class="card-body">
+                    <form
+                            role="form"
+                            method="post"
+                            th:action="@{/{postUrl}/comments(postUrl=${post.url})}"
+                            th:object="${comment}"
+                    >
+                        <div class="row">
+                            <div class="col-md-5 mb-3">
+                                <label class="form-label" for="name">Name</label>
+                                <input
+                                        class="form-control"
+                                        id="name"
+                                        name="name"
+                                        placeholder="Enter name"
+                                        th:field="*{name}"
+                                        type="text"
+                                />
+                                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5 mb-3">
+                                <label class="form-label" for="email">Email</label>
+                                <input
+                                        class="form-control"
+                                        id="email"
+                                        name="email"
+                                        placeholder="Enter email"
+                                        th:field="*{email}"
+                                        type="text"
+                                />
+                                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9 mb-3">
+                                <label class="form-label" for="content">Content</label>
+                                <textarea
+                                        class="form-control"
+                                        id="content"
+                                        name="content"
+                                        placeholder="Enter comment"
+                                        rows="8"
+                                        th:field="*{content}"
+                                >
+                            </textarea>
+                                <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-5">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
         </div>
+
         <div class="col-md-3">
             <div th:replace="blog/search :: search"></div>
         </div>
@@ -25,9 +104,6 @@
 <br /><br /><br /><br />
 <div th:replace="~{blog/footer :: footer}"></div>
 </body>
-
-
-</html>
 
 
 </html>
