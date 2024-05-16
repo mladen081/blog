@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import u.blog.dto.CommentDto;
 import u.blog.dto.PostDto;
+import u.blog.service.CommentService;
 import u.blog.service.PostService;
 
 import java.util.List;
@@ -13,9 +15,11 @@ import java.util.List;
 @Controller
 public class PostController {
     private final PostService postService;
+    private final CommentService commentService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, CommentService commentService) {
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/admin/posts")
@@ -23,6 +27,19 @@ public class PostController {
         List<PostDto> posts = postService.findAllPosts();
         model.addAttribute("posts", posts);
         return "admin/posts";
+    }
+
+    @GetMapping("/admin/posts/comments")
+    public String postComments(Model model) {
+        List<CommentDto> comments = commentService.findAllComments();
+        model.addAttribute("comments", comments);
+        return "admin/comments";
+    }
+
+    @GetMapping("/admin/posts/comments/{commentId}")
+    public String deleteComments(@PathVariable("commentId") Long commentId, Model model) {
+        commentService.deleteComment(commentId);
+        return "redirect:/admin/posts/comments";
     }
 
     @GetMapping("/admin/posts/newpost")

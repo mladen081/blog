@@ -9,6 +9,10 @@ import u.blog.repository.CommentRepository;
 import u.blog.repository.PostRepository;
 import u.blog.service.CommentService;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -27,5 +31,18 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = CommentMapper.mapToComment(commentDto);
         comment.setPost(post);
         commentRepository.save(comment);
+    }
+
+    @Override
+    public List<CommentDto> findAllComments() {
+        List<Comment> comments = commentRepository.findAll();
+        return comments.stream()
+                .map(CommentMapper::mapToCommentDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteComment(Long commentId) {
+        commentRepository.deleteById(commentId);
     }
 }
