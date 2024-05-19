@@ -9,6 +9,8 @@ import u.blog.dto.CommentDto;
 import u.blog.dto.PostDto;
 import u.blog.service.CommentService;
 import u.blog.service.PostService;
+import u.blog.util.ROLE;
+import u.blog.util.SecurityUtils;
 
 import java.util.List;
 
@@ -24,14 +26,26 @@ public class PostController {
 
     @GetMapping("/admin/posts")
     public String posts(Model model) {
-        List<PostDto> posts = postService.findAllPosts();
+        String role = SecurityUtils.getRole();
+        List<PostDto> posts = null;
+        if (ROLE.ROLE_ADMIN.name().equals(role)) {
+            posts = postService.findAllPosts();
+        } else {
+            posts = postService.findPostsByUser();
+        }
         model.addAttribute("posts", posts);
         return "admin/posts";
     }
 
     @GetMapping("/admin/posts/comments")
     public String postComments(Model model) {
-        List<CommentDto> comments = commentService.findAllComments();
+        String role = SecurityUtils.getRole();
+        List<CommentDto> comments = null;
+        if (ROLE.ROLE_ADMIN.name().equals(role)) {
+            comments = commentService.findAllComments();
+        } else {
+            comments = commentService.findCommentsByPost();
+        }
         model.addAttribute("comments", comments);
         return "admin/comments";
     }
