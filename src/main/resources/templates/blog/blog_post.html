@@ -7,7 +7,7 @@
 <div th:replace="~{blog/header :: navbar}"></div>
 <br /><br />
 
-<div class="container">
+<div class="container" style="background-color: lightblue;">
     <div class="row">
         <div class="col-md-9">
             <h1 th:text="${post.title}"></h1>
@@ -22,10 +22,11 @@
 
                 <div th:each="comment: ${post.comments}">
                     <div>
-                        <p><b>Name:</b><strong th:text="${comment.name}"></strong></p>
-                        <p><b>Date:</b><strong th:text="${#temporals.format(comment.createdOn, 'dd MMMM yyyy')}"></strong></p>
+                        <p><b>Name:</b><br /><strong th:text="${comment.name}"></strong></p>
+                        <p><b>Date:</b><br /><strong th:text="${#temporals.format(comment.createdOn, 'dd MMMM yyyy')}"></strong></p>
                         <p th:text="${comment.content}"></p>
                         <br />
+                        <hr />
                     </div>
                 </div>
 
@@ -94,9 +95,13 @@
             </div>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-3">
-            <div th:replace="blog/search :: search"></div>
+    <br /><br />
+
+    <div class="row">
+        <div class="col-md-9">
+            <div th:replace="~{blog/search :: search}"></div>
         </div>
     </div>
 </div>
